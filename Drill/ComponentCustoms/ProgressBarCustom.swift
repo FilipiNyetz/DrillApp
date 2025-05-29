@@ -1,55 +1,53 @@
-//
-//  ProgressBarCustom.swift
-//  Drill
-//
-//  Created by Filipi Romão on 16/05/25.
-//
-
 import SwiftUI
 
 struct ProgressBarCustom: View {
-    @State var progress: CGFloat = 0.22
+    @Binding var progress: Double
+    
     var body: some View {
-        HStack{
+        HStack {
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
+                    // Fundo da barra
                     Rectangle()
                         .frame(width: geometry.size.width, height: 16)
-                        .opacity(1)
                         .foregroundColor(Color("darkGray"))
                         .cornerRadius(8)
                     
-                    Rectangle()
-                        .frame(
-                            width: min(progress * geometry.size.width,
-                                       geometry.size.width),
-                            height: 16
-                        )
-                        .cornerRadius(8)
-                        .foregroundColor(Color("primary"))
-//                    Image("Medalha25")
-//                        .resizable()
-//                        .frame(width: 18,height: 26)
-//                        .position(x: 63, y: 14)
-//                    Image("Medalha50")
-//                        .resizable()
-//                        .frame(width: 18,height: 26)
-//                        .position(x: 133, y: 14)
-//                    Image("Medalha75")
-//                        .resizable()
-//                        .frame(width: 18,height: 26)
-//                        .position(x: 202, y: 14)
-//                    
-//                    Image("Medalha100")
-//                        .resizable()
-//                        .frame(width: 18,height: 26)
-//                        .position(x: 270, y: 14)
-                    
+                    if progress >= 1.0 {
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .frame(
+                                width: max(1.0 * geometry.size.width, 18),
+                                height: 16
+                            )
+                            .foregroundColor(Color("primary"))
+                            .clipShape(
+                                RoundedCorner(
+                                    radius: 8,
+                                    corners: progress >= 1.0 ? .allCorners : [.topLeft, .bottomLeft]
+                                )
+                            )
+                    }else if progress > 0 {
+                        // Barra de progresso
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .frame(
+                                width: max(progress * geometry.size.width, 18),
+                                height: 16
+                            )
+                            .foregroundColor(Color("primary"))
+                            .clipShape(
+                                RoundedCorner(
+                                    radius: 8,
+                                    corners: progress >= 1.0 ? .allCorners : [.topLeft, .bottomLeft]
+                                )
+                            )
+                    }
                 }
             }
-        }.frame(width: 280)
-            .padding(.bottom, 12)
+        }
+        .frame(width: 280)
+        .padding(.bottom, 12)
     }
+    
+    
 }
-
 

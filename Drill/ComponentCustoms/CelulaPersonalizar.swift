@@ -15,7 +15,7 @@ struct CelulaPersonalizar: View {
     @Environment(\.modelContext) private var modelContext
     var body: some View {
         VStack(alignment: .leading){
-            Text("Informe sua modalidade").foregroundColor(Color("text")).font(.system(.title2, weight: .semibold))
+            Text("Informe sua modalidade").foregroundColor(Color("text")).font(.system(size: 18, weight: .semibold))
             HStack(){
                 Text("\(context)")
                     .foregroundColor(Color("text"))

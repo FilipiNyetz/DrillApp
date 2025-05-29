@@ -16,14 +16,16 @@ class SkillProgress {
     var aplicou: Bool
     var medal: String
     
+    
   
 
-    init(name: String, progress: Double, treinou: Bool = false, aplicou: Bool = false, medal: String){
+    init(name: String, progress: Double, treinou: Bool = false, aplicou: Bool = false, medal: String, ){
         self.name = name
         self.progress = progress
         self.treinou = treinou
         self.aplicou = aplicou
         self.medal = medal
+        
         
     }
 
@@ -37,6 +39,7 @@ class SkillProgress {
         default: medal = "nenhuma"
         }
     }
+    
 }
 
 

@@ -1,18 +1,41 @@
-//
-//  MenuMyModalities.swift
-//  Drill
-//
-//  Created by Filipi Romão on 27/05/25.
-//
-
 import SwiftUI
+import SwiftData
 
 struct MenuMyModalities: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+    @Query var modalities: [Modality]
+    @Binding var modalitySelected: Modality
 
-#Preview {
-    MenuMyModalities()
+    var body: some View {
+        
+        VStack(alignment: .leading){
+            Text("Selecione sua modalidade").foregroundColor(Color("text")).font(.system(size: 18, weight: .semibold))
+            HStack(){
+                Text("Suas modalidades")
+                    .foregroundColor(Color("text"))
+                Spacer()
+                Menu{
+                    ForEach(modalities, id: \.self) { myModality in
+                        Button(action: {
+                            modalitySelected = myModality
+                        }) {
+                            Text(myModality.nameModality)
+                        }
+                    }
+                }label:{
+                    HStack{
+                        Text("\(modalitySelected.nameModality)")
+                        (Image(systemName: "chevron.up.chevron.down"))
+                    }
+                }.foregroundColor(Color("text"))
+                
+                
+            }.padding(.trailing,20)
+                .padding(.leading,20)
+                .frame(width: 346, height: 44)
+                .border(Color("darkGray"))
+                .background(Color("secondary"))
+            
+        }
+
+    }
 }

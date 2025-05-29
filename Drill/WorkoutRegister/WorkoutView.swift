@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 
 struct WorkoutView: View {
 //    @Binding var skills: [String : Double]
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) private var modelContext
+    
     @State var teste :Int = 0
     @State var modality: Modality
     
@@ -45,6 +48,12 @@ struct WorkoutView: View {
                 Spacer()
                 
                 Button(action:{
+                    if modality.trainedToday == false{
+                        modality.totalDaysTrained += 1
+                    }
+                    modality.trainedToday = true
+                    modality.updateProgress()
+                    try? modelContext.save()
                    dismiss()
                 }){
                     Image(systemName: "checkmark")
@@ -64,13 +73,3 @@ struct WorkoutView: View {
     }
 }
 
-//#Preview {
-//    struct PreviewWrapper: View{
-//        @State private var skills: [String : Double] = ["Teste":0.0]
-//        
-//        var body: some View{
-//            WorkoutView()
-//        }
-//    }
-//    return PreviewWrapper()
-//}

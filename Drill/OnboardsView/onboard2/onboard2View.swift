@@ -65,7 +65,8 @@ public struct Onboard2: View {
                         .font(.system(size: 18, weight: .bold))
                     }
                     .navigationDestination(isPresented: $nextPage) {
-                        homeView(modality: modality)
+//                        homeView(modality: modality)
+                        
                     }
                 }.foregroundColor(.white).padding(.top,24).padding(.bottom,36)
             }
@@ -78,4 +79,3 @@ public struct Onboard2: View {
     
     
 }
-

@@ -11,34 +11,48 @@ import SwiftData
 struct ProfileView: View {
     
     @Environment(\.modelContext) private var modelContext
+    
+    
+    
     @State var modality: Modality
     
-    
-    let modalities: [String] = ["Jiu-Jitsu","Judo","Muay-thai","Boxe"]
-    
-    let beltsBJJ: [String] = ["Branca","Azul","Roxa","Marrom","Preta"]
-    let beltsJudo: [String] = ["Branca","Branca/Cinza", "Cinza", "Cinza/Azul","Azul","Azul/Amarela","Amarela","Amarela/Laranja","Laranja","Verde","Roxa","Marrom","Preta"]
-    let beltsMuayThai: [String] = ["Branca","Vermelho/Branco","Vermelho","Vermelho/Azul claro" , "Azul claro", "Azul claro/ Azul escuro", "Azul escuro", "Azul escuro/Preto","Preto","Preto/Branco" ,"Preto/Branco/Vermelho"]
-    
+    @State private var mostrarModal = false
     
     var body: some View {
+        
         ZStack {
             Color("background").ignoresSafeArea()
             VStack{
+                
                 VStack {
-                    Text("Perfil de evolução").foregroundColor(Color("text"))
-                        .font(.system(size: 26, weight: .bold))
+                    HStack{
+                        Text("Perfil de evolução").foregroundColor(Color("text"))
+                            .font(.system(size: 26, weight: .bold))
+                        Spacer()
+                        Button(action: {
+                            mostrarModal = true
+                        }) {
+                            Image(systemName: "plus")
+                                .font(.title2)
+                                .foregroundColor(.white)
+                                .padding(8)
+                                .background(Color.gray.opacity(0.1))
+                                .clipShape(Circle())
+                        }
+                    }
                 }.frame(maxWidth: 346, alignment: .leading)
                     .padding(.top, 24)
                     .padding(.bottom, 24)
                 Spacer()
                 VStack {
-                    CelulaPersonalizar(options: modalities, context: "Modalidade", element: $modality.nameModality)
+                    MenuMyModalities(modalitySelected: $modality)
                     Spacer()
                     switch modality.nameModality {
                     case "Judo":
+                        
                         //Chama a celula e passa as opcoes do faixa do judo e qual valor será preenchido no element
                         CelulaPersonalizar(options: beltsJudo,context: "Faixa", element: $modality.belt)
+                        
                         
                     case "Muay-thai":
                         CelulaPersonalizar(options: beltsMuayThai,context: "Faixa", element: $modality.belt)
@@ -59,8 +73,6 @@ struct ProfileView: View {
                         .font(.system(size: 20, weight: .semibold)).padding(.bottom,8)
                     ZStack {
                         Color("backgroundBoardMedal")
-                        
-                        // Aqui você vai usar LazyVGrid para mostrar todos os skills em grid
                         
                         ScrollView{
                             LazyVGrid(
@@ -89,32 +101,13 @@ struct ProfileView: View {
                 }.padding(.bottom, 54)
                 
             }
-       }
-//            .onChange(of: user.modality) { oldValue, newValue in
-//            modality.belt = "Branca"
-            
-//            switch user.modality {
-//            case "Jiu-Jitsu":
-//                instanciarSkill(bjjSkills)
-//                
-//            case "Boxe":
-//                instanciarSkill(boxingSkills)
-//                
-//            case "Muay-thai":
-//                instanciarSkill(muayThaiSkills)
-//                
-//            case "Judo":
-//                instanciarSkill(judoSkills)
-//                
-//            default:
-//                break
-//            }
-            
+        }
+        .sheet(isPresented: $mostrarModal) {
+            AdicionarModalidadeView()
         }
         
+        
+        
     }
-//    func instanciarSkill(_ modality:[String]){
-//        generatedSkills = modality.map({SkillProgress(name: $0, progress:0.0, medal: "nenhuma", modality: user.modality, user: user)})
-//    }
-
-
+   
+}

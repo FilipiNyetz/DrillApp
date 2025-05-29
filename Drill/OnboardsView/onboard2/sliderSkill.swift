@@ -18,7 +18,7 @@ struct sliderSkill: View {
                     Image(systemName:"minus").foregroundColor(Color.white)
                 }
                 
-                Slider(value: $skillValue,in: 0...100,step: 1) {
+                Slider(value: $skillValue,in: 0...100,step: 1){
                     Text("Speed")
                 } minimumValueLabel: {
                     Text("0")
@@ -26,7 +26,7 @@ struct sliderSkill: View {
                     Text("100")
                 } onEditingChanged: { editing in
                     skillValue = skillValue
-                }.frame(width: 264)
+                }.frame(width: 264).tint(.white)
                 
                 Button(action:{skillValue+=1}){
                     Image(systemName:"plus").foregroundColor(Color.white)

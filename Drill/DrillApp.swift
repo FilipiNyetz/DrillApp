@@ -35,5 +35,3 @@ struct DrillApp: App {
         
     }
 }
-
-

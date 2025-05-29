@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ViewProgress: View {
-    
+    @Binding var modalityProgress:Double
+    @Binding var modality:Modality
     var body: some View {
         VStack(alignment: .leading,spacing: 12){
             VStack(alignment: .leading){
@@ -21,8 +22,10 @@ struct ViewProgress: View {
                     .foregroundColor(Color("text")).padding(.leading,4)
             }.padding(.top,12)
            
+           
+            ProgressBarCustom(progress: $modalityProgress)
             
-            ProgressBarCustom()
+            
         }.frame(width: 322, height: 96)
             .background(Color("secondary"))
             .cornerRadius(8)
