@@ -6,11 +6,14 @@ struct TabViewComponent: View {
     @Query private var modalities: [Modality]
     @State private var modality: Modality?
     
+    @Query private var registeredDates: [WorkoutData]
+    @State private var allRegisteredDates: [WorkoutData] = []
+    
     var body: some View {
         Group {
             if let modality = modalities.first {
                 TabView {
-                    homeView(modality: modality)
+                    homeView(modality: modality,registeredWorkouts: $allRegisteredDates)
                         .tabItem {
                             Image(systemName: "house")
                             Text("Início")
@@ -41,5 +44,9 @@ struct TabViewComponent: View {
                     .foregroundColor(.gray)
             }
         }
+        .onAppear {
+            allRegisteredDates = registeredDates
+        }
+        
     }
 }

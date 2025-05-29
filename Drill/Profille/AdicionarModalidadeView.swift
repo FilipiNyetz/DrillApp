@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AdicionarModalidadeView: View {
     @Environment(\.modelContext) private var modelContext
-    @State private var modality = Modality(nameModality: "", belt: "", graduation: "", skillsModality: [])
+    @State private var modality = Modality(nameModality: "", belt: "", graduation: "", skillsModality: [],datesRegistered: [])
     @State private var navegarParaProximaEtapa = false
     
     @State private var annualGoalText: String = ""

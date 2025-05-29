@@ -12,6 +12,7 @@ final class Modality {
     var goalDays: Int
     var goalProgress: Double
     var lastTrainedDate: Date?
+    var datesRegistered:[WorkoutData] = []
 
     init(
         nameModality: String = "",
@@ -22,7 +23,8 @@ final class Modality {
         trainedToday: Bool = false,
         goalDays: Int = 0,
         goalProgress: Double = 0,
-        lastTrainedDate: Date? = nil
+        lastTrainedDate: Date? = nil,
+        datesRegistered:[WorkoutData]
     ) {
         self.nameModality = nameModality
         self.belt = belt
@@ -33,6 +35,7 @@ final class Modality {
         self.goalDays = goalDays
         self.goalProgress = goalProgress
         self.lastTrainedDate = lastTrainedDate
+        self.datesRegistered = datesRegistered
     }
 
     func updateProgress() {

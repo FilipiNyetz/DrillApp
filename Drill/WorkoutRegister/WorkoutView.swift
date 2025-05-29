@@ -18,6 +18,7 @@ struct WorkoutView: View {
     @State var teste :Int = 0
     @State var modality: Modality
     
+    @Binding var registeredWorkouts:[WorkoutData]
     
     var body: some View {
         
@@ -47,24 +48,39 @@ struct WorkoutView: View {
                     
                 Spacer()
                 
-                Button(action:{
-                    if modality.trainedToday == false{
+                Button(action: {
+                    // Para cada skill treinada, criar e salvar um WorkoutData
+                    for skill in modality.skillsModality where skill.treinou  {
+                        let workout = WorkoutData(skill: skill)
+                        workout.treinou = skill.treinou
+                        modelContext.insert(workout)
+                        modality.datesRegistered.append(workout)
+                    }
+
+                    // Atualizar progresso e status
+                    if modality.trainedToday == false {
                         modality.totalDaysTrained += 1
                     }
+
                     modality.trainedToday = true
+                    modality.lastTrainedDate = Date()
                     modality.updateProgress()
+
+                    // Salvar tudo
                     try? modelContext.save()
-                   dismiss()
-                }){
+                    dismiss()
+                }) {
                     Image(systemName: "checkmark")
                     Text("Registrado")
-                }.frame(width: 218, height: 49)
-                    .foregroundStyle(.white)
-                    .background(Color("primary"))
-                    .cornerRadius(12)
-                    .font(.system(size: 18, weight: .semibold))
-                    .padding(.top,38)
-                    .padding(.bottom,36)
+                }
+                .frame(width: 218, height: 49)
+                .foregroundStyle(.white)
+                .background(Color("primary"))
+                .cornerRadius(12)
+                .font(.system(size: 18, weight: .semibold))
+                .padding(.top, 38)
+                .padding(.bottom, 36)
+
                 
                 
                 

@@ -14,44 +14,18 @@ struct homeView: View {
     @Environment(\.modelContext) private var modelContext
     
     @State var modality: Modality
+    @Binding var registeredWorkouts:[WorkoutData]
     
     let calendar = Calendar.current
     @State private var timer: Timer?
-//    @State var currentDay = Calendar.current.startOfDay(for: Date())
-//    
-//    func checkAndResetTasksIfNeeded() {
-//            let lastReset = UserDefaults.standard.object(forKey: UserDefaults.lastResetDateKey) as? Date
-//            let lastResetDay = lastReset.map { calendar.startOfDay(for: $0) }
-//
-//            guard lastResetDay != currentDay else {
-//                return // Já ressetou hoje
-//            }
-//
-////             Fetch modality do banco
-//            let descriptor = FetchDescriptor<Modality>()
-//            do {
-//                let modalities = try modelContext.fetch(descriptor)
-//
-//                for modality in modalities {
-//                        modality.completed = false // Reseta a conclusão
-//                }
-//
-//                try modelContext.save()
-//                UserDefaults.standard.set(Date(), forKey: UserDefaults.lastResetDateKey)
-//            } catch {
-//                print("Erro ao resetar tarefas diárias: (error.localizedDescription)")
-//            }
-//        
-//        }
 
     
     var body: some View {
         NavigationStack{
             ZStack {
-               
+                
                 Color("background").ignoresSafeArea()
                 VStack{
-                    
                     VStack(alignment: .leading){
                         MenuMyModalities(modalitySelected: $modality)
                         Text("Seu progresso nos treinos")
@@ -87,7 +61,7 @@ struct homeView: View {
             }
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $sendWorkoutPage) {
-                WorkoutView(modality:modality)
+                WorkoutView(modality:modality, registeredWorkouts: $registeredWorkouts)
             }
         }
         .onChange(of:modality.nameModality){

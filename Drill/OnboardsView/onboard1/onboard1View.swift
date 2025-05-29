@@ -13,7 +13,7 @@ struct onboard1View: View {
     @Environment(\.dismiss) var dismiss
     
     @Query private var modalities: [Modality] //Busca por todas as modalidades(no momento inicial vazio)
-    @State private var modality = Modality(nameModality: "Jiu-Jitsu", belt: "Branca", graduation: "Lisa", skillsModality: []) // Cria a primeira instancia modalidade, iniciando com BJJ, mas nao passa nenhuma skill
+    @State private var modality = Modality(nameModality: "Jiu-Jitsu", belt: "Branca", graduation: "Lisa", skillsModality: [],datesRegistered: []) // Cria a primeira instancia modalidade, iniciando com BJJ, mas nao passa nenhuma skill
     
     @State private var nextPage: Bool = false
     

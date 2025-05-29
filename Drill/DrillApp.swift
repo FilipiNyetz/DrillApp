@@ -8,6 +8,7 @@ struct DrillApp: App {
             
             Modality.self,
             SkillProgress.self,
+            WorkoutData.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         
