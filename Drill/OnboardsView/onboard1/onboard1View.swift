@@ -12,8 +12,8 @@ struct onboard1View: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     
-    @Query private var modalities: [Modality] //Busca por todas as modalidades(no momento inicial vazio)
-    @State private var modality = Modality(nameModality: "Jiu-Jitsu", belt: "Branca", graduation: "Lisa", skillsModality: [],datesRegistered: []) // Cria a primeira instancia modalidade, iniciando com BJJ, mas nao passa nenhuma skill
+    @Query private var modalities: [Modality] 
+    @State private var modality = Modality(nameModality: "Jiu-Jitsu", belt: "Branca", graduation: "Lisa", skillsModality: [],datesRegistered: [])
     
     @State private var nextPage: Bool = false
     
@@ -45,7 +45,7 @@ struct onboard1View: View {
                             case "Muay-thai":
                                 CelulaPersonalizar(options: beltsMuayThai, context: "Faixa", element: $modality.belt)
                             case "Boxe":
-                                EmptyView() // Nenhum input adicional
+                                EmptyView()
                             default:
                                 CelulaPersonalizar(options: beltsBJJ, context: "Faixa", element: $modality.belt)
                                 CelulaPersonalizar(options: graduations, context: "Graduação", element: $modality.graduation)
@@ -67,9 +67,9 @@ struct onboard1View: View {
                         Button(action: {
                             nextPage = true
                             modality.goalDays = Int(annualGoalText) ?? 00
-                            modelContext.insert(modality)//Insere o model de modalidade, no modelContext
+                            modelContext.insert(modality)
                             
-                            try! modelContext.save()//salva o que tem
+                            try! modelContext.save()
                         }) {
                             Text("Próximo")
                             Image(systemName: "arrow.right")
@@ -88,15 +88,15 @@ struct onboard1View: View {
                 }
                 
             }.tint(.white)
-                .onChange(of: modality.nameModality) { oldValue, newValue in //Sempre que alterar os inputs chama aqui
+                .onChange(of: modality.nameModality) { oldValue, newValue in
                     modality.belt = "Branca"
-                    modality.graduation = "Lisa" // reset opcional para consistência
+                    modality.graduation = "Lisa"
                     
-                    var newSkills: [SkillProgress] = [] //Array de novas skills
+                    var newSkills: [SkillProgress] = []
                     
                     switch newValue {
                     case "Jiu-Jitsu":
-                        newSkills = bjjSkills.map { SkillProgress(name: $0, progress: 0.0, medal: "nenhuma") }//Realiza um map em todos os elementos do array bjjSkills e para cada elemento seta os valores iniciais
+                        newSkills = bjjSkills.map { SkillProgress(name: $0, progress: 0.0, medal: "nenhuma") }
                     case "Judo":
                         newSkills = judoSkills.map { SkillProgress(name: $0, progress: 0.0, medal: "nenhuma") }
                     case "Muay-thai":
@@ -107,9 +107,8 @@ struct onboard1View: View {
                         newSkills = []
                     }
                     
-                    // Força a substituição total do array
                     modality.skillsModality = []
-                    modality.skillsModality.append(contentsOf: newSkills) //Insere o valor de novas skills com estrutura skillProgress no array de skills do model modalidade
+                    modality.skillsModality.append(contentsOf: newSkills) 
                 }
             
                 .onAppear(){
@@ -127,6 +126,7 @@ struct onboard1View: View {
                             break
                         }
                     }
+                    checkForPermision()
                 }
            
             
@@ -138,5 +138,56 @@ struct onboard1View: View {
             return false
         }
         return true
+    }
+   
+    func checkForPermision(){
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.getNotificationSettings { settings in
+            switch settings.authorizationStatus {
+            case .authorized:
+                print("Permissão autorizada")
+                self.dispatchNotification()
+            case .denied:
+                print("Permissão negada")
+                return
+            case .notDetermined:
+                print("Permissão ainda não foi demandada")
+                notificationCenter.requestAuthorization(options: [.alert, .sound]) { didAllow,error in
+                    if didAllow{
+                        self.dispatchNotification()
+                    }
+                }
+            default:
+                print("Algum problema inesperado")
+                return
+            }
+        }
+    }
+    func dispatchNotification() {
+        let title = "Hora de lutar pelo seu progresso!"
+        let body = "Treine hoje. Supere ontem. Continue evoluindo!"
+        let hour = 20
+        let minute = 0
+        let isDaily = true
+        
+        let notificationCenter = UNUserNotificationCenter.current()
+        
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+        
+        
+        let calendar = Calendar.current
+        var dateComponents = DateComponents(calendar: calendar, timeZone: TimeZone.current)
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: isDaily)
+        let request = UNNotificationRequest(identifier: "LocalNotification", content: content, trigger: trigger)
+        
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: ["LocalNotification"])
+        notificationCenter.add(request)
+        
     }
 }

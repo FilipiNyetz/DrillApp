@@ -11,8 +11,7 @@ import SwiftData
 struct CheckBoxButtons: View {
     var skill: SkillProgress
     @Environment(\.modelContext) private var modelContext
-//    @AppStorage("botaoTreinouClicado") var cliqueTreinou: Bool = false
-//    @AppStorage("botaoAplicouClicado") var cliqueAplicou: Bool = false
+
     
     var body: some View {
         HStack(alignment: .center){
@@ -30,7 +29,7 @@ struct CheckBoxButtons: View {
                 
             }){
                 HStack {
-                    Image(systemName: skill.treinou ? "checkmark.circle" : "circle") // ← alterna
+                    Image(systemName: skill.treinou ? "checkmark.circle" : "circle")
                         .foregroundColor(.white)
                     Text("Treinou")
                 }
@@ -48,7 +47,7 @@ struct CheckBoxButtons: View {
                 try? modelContext.save()
             }){
                 HStack {
-                    Image(systemName: skill.aplicou ? "checkmark.circle" : "circle") // ← alterna
+                    Image(systemName: skill.aplicou ? "checkmark.circle" : "circle")
                         .foregroundColor(.white)
                     Text("Aplicou")
                 }

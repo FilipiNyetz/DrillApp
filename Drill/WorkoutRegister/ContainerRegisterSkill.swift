@@ -41,6 +41,3 @@ struct ContainerRegisterSkill: View {
     }
 }
 
-//#Preview {
-//    ContainerRegisterSkill()
-//}

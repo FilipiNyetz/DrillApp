@@ -10,7 +10,7 @@ import SwiftData
 
 
 struct WorkoutView: View {
-    //    @Binding var skills: [String : Double]
+    @State var showAddSkill: Bool = false
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -28,11 +28,22 @@ struct WorkoutView: View {
         ZStack{
             Color("background").ignoresSafeArea()
             VStack(){
-
                 VStack(alignment: .leading,spacing: 16){
-                    Text("Suas habilidades")
-                        .font(.system(size: 28, weight: .bold))
-                        .foregroundStyle(Color("text"))
+                    HStack{
+                        Text("Suas habilidades")
+                            .font(.system(size: 28, weight: .bold))
+                            .foregroundStyle(Color("text"))
+                        Spacer()
+                        Button(action:{
+                            print("Aqui vai add")
+                            showAddSkill.toggle()
+                        }) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 24, weight: .regular))
+                                .padding(.trailing,16)
+                                .foregroundStyle(Color("text"))
+                        }
+                    }
                     VStack(alignment: .leading){
                         Text(today.formatted(
                             Date.FormatStyle()
@@ -113,6 +124,10 @@ struct WorkoutView: View {
         .onAppear{
             registeredSkills = registeredWorkouts.map({$0.skill.name})
         }
+        .sheet(isPresented: $showAddSkill) {
+            SheetAddSkillView(modality: $modality)
+        }
     }
+    
 }
 

@@ -13,9 +13,6 @@ public struct Onboard2: View {
     
     @State private var nextPage: Bool = false
 
-    
-    
-//    @State var onboarding2Finished: Bool = false
     @Environment(\.modelContext) private var modelContext
     @State var modality: Modality
     
@@ -26,10 +23,7 @@ public struct Onboard2: View {
             ZStack{
                 Color("background").ignoresSafeArea()
                 VStack{
-                    Text("\(modality.nameModality)")
-                    Text("\(modality.skillsModality)")
-                    Text("\(modality.belt)")
-                    headerOnboard2()
+                    HeaderOnboard2(modality: modality)
                     Spacer()
                     ZStack{
                         Color("secondary")
@@ -40,7 +34,7 @@ public struct Onboard2: View {
                                 ForEach($modality.skillsModality, id: \.self) { $skill in
                                     sliderSkill(skillValue: $skill.progress, name: skill.name)
                                 }
-                            }.padding(.vertical, 8)
+                            }.padding(.vertical, 4)
                         }.frame(width: 368, height: 439)
                         
                     }
@@ -65,10 +59,9 @@ public struct Onboard2: View {
                         .font(.system(size: 18, weight: .bold))
                     }
                     .navigationDestination(isPresented: $nextPage) {
-//                        homeView(modality: modality)
                         
                     }
-                }.foregroundColor(.white).padding(.top,24).padding(.bottom,36)
+                }.foregroundColor(.white).padding(.bottom,36)
             }
         }
        

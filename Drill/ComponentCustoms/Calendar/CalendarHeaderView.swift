@@ -12,7 +12,7 @@ struct CalendarHeaderView: View {
                 .foregroundColor(.white)
             Spacer()
 
-            HStack(spacing: 16) {
+            HStack(spacing: 20) {
                 Button(action: onPrevious) {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.white)

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TextFieldView: View {
-    @Binding    var annualGoalText: String 
+    @Binding var annualGoalText: String
     var body: some View {
         ZStack(alignment: .leading) {
             if annualGoalText.isEmpty {

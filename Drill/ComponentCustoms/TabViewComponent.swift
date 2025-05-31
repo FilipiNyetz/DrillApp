@@ -20,15 +20,7 @@ struct TabViewComponent: View {
                         }.toolbarBackground(Color("darkGray"), for: .tabBar)
                         .toolbarBackground(.visible, for: .tabBar)
                         .toolbarColorScheme(.dark, for: .tabBar)
-                    
-                    RankingView()
-                        .tabItem {
-                            Image(systemName: "star.fill")
-                            Text("Classificação")
-                        }.toolbarBackground(Color("darkGray"), for: .tabBar)
-                        .toolbarBackground(.visible, for: .tabBar)
-                        .toolbarColorScheme(.dark, for: .tabBar)
-                    
+                
                     ProfileView(modality: modality)
                         .tabItem {
                             Image(systemName: "person.fill")

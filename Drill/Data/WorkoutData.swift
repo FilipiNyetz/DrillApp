@@ -12,13 +12,13 @@ import SwiftData
 class WorkoutData {
     var dateRegister: Date
     var skill: SkillProgress
-    var treinou: Bool   // <- novo
-    var aplicou: Bool   // <- novo
+    var treinou: Bool
+    var aplicou: Bool
 
     init(skill: SkillProgress) {
         self.dateRegister = Date()
         self.skill = skill
-        self.treinou = skill.treinou  // <- salva o estado do momento
-        self.aplicou = skill.aplicou  // <- idem
+        self.treinou = skill.treinou
+        self.aplicou = skill.aplicou  
     }
 }

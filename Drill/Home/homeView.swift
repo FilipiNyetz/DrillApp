@@ -26,16 +26,6 @@ struct homeView: View {
                 
                 Color("background").ignoresSafeArea()
                 VStack{
-                    VStack{
-                        Text("Total registros: \(modality.datesRegistered.count)")
-//                        ForEach(modality.datesRegistered, id: \.self){dateRegister in
-//                            Text("\(dateRegister.skill.name)")
-//                            Text("\(dateRegister.dateRegister)")
-//                            Text("Treinou : \(dateRegister.treinou)")
-//                            Text("Treinou : \(dateRegister.aplicou)")
-//                        }
-                    }.padding(.top, 40)
-                   
                     VStack(alignment: .leading){
                         MenuMyModalities(modalitySelected: $modality)
                         Text("Seu progresso nos treinos")

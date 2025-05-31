@@ -77,11 +77,11 @@ struct ProfileView: View {
                         ScrollView{
                             LazyVGrid(
                                 columns: [
-                                    GridItem(.flexible(),spacing: 20), // primeira coluna
-                                    GridItem(.flexible()), // segunda coluna (pode ajustar número de colunas)
-                                    // Adicione mais colunas se quiser
+                                    GridItem(.flexible(),spacing: 20),
+                                    GridItem(.flexible()),
+                                  
                                 ],
-                                spacing: 16 // espaço entre as células
+                                spacing: 16 
                             ) {
                                 ForEach(modality.skillsModality, id: \.self) { skill in
                                     if skill.progress >= 25 {

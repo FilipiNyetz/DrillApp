@@ -54,7 +54,7 @@ final class Modality {
         let lastResetDay = lastReset.map { calendar.startOfDay(for: $0) }
 
         guard lastResetDay != today else {
-            return // Já foi resetado hoje
+            return
         }
 
         let descriptor = FetchDescriptor<Modality>()
@@ -72,7 +72,6 @@ final class Modality {
 
             try context.save()
             UserDefaults.standard.set(Date(), forKey: UserDefaults.lastResetDateKey)
-            print("✅ Reset diário executado.")
         } catch {
             print("Erro ao resetar tarefas diárias: \(error.localizedDescription)")
         }

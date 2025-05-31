@@ -39,7 +39,7 @@ struct AdicionarModalidadeView: View {
                             case "Muay-thai":
                                 CelulaPersonalizar(options: beltsMuayThai, context: "Faixa", element: $modality.belt)
                             case "Boxe":
-                                EmptyView() // Nenhum input adicional
+                                EmptyView()
                             default:
                                 CelulaPersonalizar(options: beltsBJJ, context: "Faixa", element: $modality.belt)
                                 CelulaPersonalizar(options: graduations, context: "Graduação", element: $modality.graduation)
@@ -61,9 +61,9 @@ struct AdicionarModalidadeView: View {
                         Button(action: {
                             navegarParaProximaEtapa = true
                             modality.goalDays = Int(annualGoalText) ?? 00
-                            modelContext.insert(modality)//Insere o model de modalidade, no modelContext
+                            modelContext.insert(modality)
                             
-                            try! modelContext.save()//salva o que tem
+                            try! modelContext.save()
                         }) {
                             Text("Próximo")
                             Image(systemName: "arrow.right")
@@ -80,15 +80,15 @@ struct AdicionarModalidadeView: View {
                     .navigationDestination(isPresented: $navegarParaProximaEtapa) {
                         PersonalizarModalidade(modality: modality)
                     }
-            }.onChange(of: modality.nameModality) { oldValue, newValue in //Sempre que alterar os inputs chama aqui
+            }.onChange(of: modality.nameModality) { oldValue, newValue in
                 modality.belt = "Branca"
-                modality.graduation = "Lisa" // reset opcional para consistência
+                modality.graduation = "Lisa"
                 
-                var newSkills: [SkillProgress] = [] //Array de novas skills
+                var newSkills: [SkillProgress] = []
                 
                 switch newValue {
                 case "Jiu-Jitsu":
-                    newSkills = bjjSkills.map { SkillProgress(name: $0, progress: 0.0, medal: "nenhuma") }//Realiza um map em todos os elementos do array bjjSkills e para cada elemento seta os valores iniciais
+                    newSkills = bjjSkills.map { SkillProgress(name: $0, progress: 0.0, medal: "nenhuma") }
                 case "Judo":
                     newSkills = judoSkills.map { SkillProgress(name: $0, progress: 0.0, medal: "nenhuma") }
                 case "Muay-thai":
@@ -99,9 +99,8 @@ struct AdicionarModalidadeView: View {
                     newSkills = []
                 }
                 
-                // Força a substituição total do array
                 modality.skillsModality = []
-                modality.skillsModality.append(contentsOf: newSkills) //Insere o valor de novas skills com estrutura skillProgress no array de skills do model modalidade
+                modality.skillsModality.append(contentsOf: newSkills)
             }
             
             .onAppear(){

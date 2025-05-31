@@ -20,10 +20,7 @@ struct PersonalizarModalidade: View {
             ZStack{
                 Color("background").ignoresSafeArea()
                 VStack{
-                    Text("\(modality.nameModality)")
-                    Text("\(modality.skillsModality)")
-                    Text("\(modality.belt)")
-                    headerOnboard2()
+                    HeaderOnboard2(modality: modality)
                     Spacer()
                     ZStack{
                         Color("secondary")

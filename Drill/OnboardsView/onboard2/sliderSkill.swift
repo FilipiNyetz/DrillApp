@@ -12,7 +12,7 @@ struct sliderSkill: View {
     var name : String
     var body: some View {
         VStack(alignment: .leading) {
-            Text("\(name):\(Int(skillValue))%").font(.system(size: 20, weight: .semibold))
+            Text("\(name): \(Int(skillValue))%").font(.system(size: 20, weight: .semibold))
             HStack{
                 Button(action:{skillValue-=1}){
                     Image(systemName:"minus").foregroundColor(Color.white)

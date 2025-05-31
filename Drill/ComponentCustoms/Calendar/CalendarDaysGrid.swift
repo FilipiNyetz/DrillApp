@@ -8,6 +8,7 @@ struct CalendarDaysGrid: View {
     let daysInMonth: [Date]
     let registeredDates: [Date]
     let registeredWorkout: [WorkoutData]
+    @State var workoutsForDay: [WorkoutData] = []
     
     @State var showWorkoutSheet: Bool = false
 
@@ -16,23 +17,19 @@ struct CalendarDaysGrid: View {
             ForEach(daysInMonth, id: \.self) { date in
                 let day = calendar.component(.day, from: date)
                 let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
-//                let isToday = calendar.isDateInToday(date)
                 let isFuture = date > Date()
                 let hasRecord = registeredDates.contains(where: { calendar.isDate($0, inSameDayAs: date) })
-                
-                let workoutsForDay = registeredWorkout.filter {
-                    calendar.isDate($0.dateRegister, inSameDayAs: date)
-                }
-
 
                 if calendar.isDate(date, equalTo: currentMonth, toGranularity: .month) {
-                    Button{
-                       
-                        print("\(workoutsForDay.map{$0.skill.name})")
+                    Button {
                         if !isFuture {
                             selectedDate = date
+                            workoutsForDay = registeredWorkout.filter {
+                                calendar.isDate($0.dateRegister, inSameDayAs: date)
+                            }
                         }
-                        if hasRecord{
+
+                        if hasRecord {
                             showWorkoutSheet.toggle()
                         }
                     } label: {
@@ -63,8 +60,8 @@ struct CalendarDaysGrid: View {
         .padding(.horizontal, 12)
         .padding(.bottom, 8)
         .sheet(isPresented: $showWorkoutSheet) {
-            SheetRegisteredWorkoutView()
+            SheetRegisteredWorkoutView(workoutsRegisteredInDay: workoutsForDay)
+                .presentationDetents([workoutsForDay.count>2 ? .large : .medium])
         }
     }
-       
 }

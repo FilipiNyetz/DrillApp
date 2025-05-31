@@ -1,5 +1,7 @@
 import SwiftUI
 import SwiftData
+import UserNotifications
+
 
 @main
 struct DrillApp: App {
@@ -33,6 +35,7 @@ struct DrillApp: App {
             }
         }
         .modelContainer(sharedModelContainer)
+        
         
     }
 }
