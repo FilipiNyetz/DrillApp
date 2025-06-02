@@ -13,6 +13,4 @@ struct SheetRegisteredWorkoutView: View {
     }
 }
 
-#Preview {
-    SheetRegisteredWorkoutView()
-}
+

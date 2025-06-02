@@ -7,26 +7,38 @@ struct CalendarDaysGrid: View {
     let currentMonth: Date
     let daysInMonth: [Date]
     let registeredDates: [Date]
+    let registeredWorkout: [WorkoutData]
+    
+    @State var showWorkoutSheet: Bool = false
 
     var body: some View {
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 8) {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 6) {
             ForEach(daysInMonth, id: \.self) { date in
                 let day = calendar.component(.day, from: date)
                 let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
-                let isToday = calendar.isDateInToday(date)
+//                let isToday = calendar.isDateInToday(date)
                 let isFuture = date > Date()
                 let hasRecord = registeredDates.contains(where: { calendar.isDate($0, inSameDayAs: date) })
+                
+                let workoutsForDay = registeredWorkout.filter {
+                    calendar.isDate($0.dateRegister, inSameDayAs: date)
+                }
+
 
                 if calendar.isDate(date, equalTo: currentMonth, toGranularity: .month) {
-                    Button {
+                    Button{
+                       
+                        print("\(workoutsForDay.map{$0.skill.name})")
                         if !isFuture {
                             selectedDate = date
                         }
+                        if hasRecord{
+                            showWorkoutSheet.toggle()
+                        }
                     } label: {
                         Text("\(day)")
-                            .font(.callout)
-                            .fontWeight(.medium)
-                            .frame(width: 32, height: 32)
+                            .font(.system(size: 16, weight: .regular))
+                            .frame(width: 24, height: 24)
                             .foregroundColor(isFuture ? .gray : (isSelected ? .white : .white))
                             .background(isSelected ? Color("primary") : Color.clear)
                             .clipShape(Circle())
@@ -35,8 +47,8 @@ struct CalendarDaysGrid: View {
                                     if hasRecord {
                                         Circle()
                                             .fill(isSelected ? .white : Color("primary"))
-                                            .frame(width: 6, height: 6)
-                                            .offset(y: 10)
+                                            .frame(width: 4, height: 4)
+                                            .offset(y: 8)
                                     }
                                 }
                             )
@@ -50,5 +62,9 @@ struct CalendarDaysGrid: View {
         }
         .padding(.horizontal, 12)
         .padding(.bottom, 8)
+        .sheet(isPresented: $showWorkoutSheet) {
+            SheetRegisteredWorkoutView()
+        }
     }
+       
 }

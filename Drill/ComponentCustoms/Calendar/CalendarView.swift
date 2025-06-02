@@ -3,6 +3,7 @@ import SwiftUI
 struct CalendarView: View {
     @Binding var selectedDate: Date
      var registeredDates: [Date]
+     var registeredWorkouts: [WorkoutData]
     
     @Environment(\.calendar) private var calendar
     @State private var showDatePicker = false
@@ -41,14 +42,15 @@ struct CalendarView: View {
                 selectedDate: $selectedDate,
                 currentMonth: currentMonth,
                 daysInMonth: daysInMonth,
-                registeredDates: registeredDates
+                registeredDates: registeredDates,
+                registeredWorkout: registeredWorkouts
             )
         }
-        .padding(.vertical, 16)
-        .padding(.top, 12)
-        .background(Color(.systemGray6).opacity(0.15))
+        .padding(.vertical, 12)
+        .padding(.top, 8)
+        .background(Color("secondary"))
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .padding(.horizontal, 8)
+        .padding(.horizontal, 24)
     }
 
     private func changeMonth(by value: Int) {

@@ -50,7 +50,7 @@ struct homeView: View {
                     Spacer()
                     ViewProgress(modalityProgress: $modality.goalProgress,modality:$modality)
                     Spacer()
-                    CalendarView(selectedDate: $currentDate, registeredDates: modality.datesRegistered.map { $0.dateRegister })
+                    CalendarView(selectedDate: $currentDate, registeredDates: modality.datesRegistered.map { $0.dateRegister }, registeredWorkouts: modality.datesRegistered)
                     Spacer()
 
                     Button(action:{
@@ -72,16 +72,16 @@ struct homeView: View {
             .navigationBarBackButtonHidden(true)
             .navigationDestination(isPresented: $sendWorkoutPage) {
                 WorkoutView(modality:modality, registeredWorkouts: $registeredWorkouts)
+                
             }
         }
         .onChange(of:modality.nameModality){
             modality.updateProgress()
+            registeredWorkouts = modality.datesRegistered.filter {
+                    Calendar.current.isDate($0.dateRegister, inSameDayAs: Date())
+                }
         }
         .onAppear {
-//            UserDefaults.standard.set(
-//                        Calendar.current.date(byAdding: .day, value: -1, to: Date()),
-//                        forKey: UserDefaults.lastResetDateKey
-//                    )
             Modality.resetDailyIfNeeded(context: modelContext)
         }
 

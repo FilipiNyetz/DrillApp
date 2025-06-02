@@ -10,7 +10,7 @@ import SwiftData
 
 
 struct WorkoutView: View {
-//    @Binding var skills: [String : Double]
+    //    @Binding var skills: [String : Double]
     
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -22,12 +22,13 @@ struct WorkoutView: View {
     var today: Date = Date()
     
     @Binding var registeredWorkouts:[WorkoutData]
-    
+    @State var registeredSkills: [String] = []
     var body: some View {
         
         ZStack{
             Color("background").ignoresSafeArea()
             VStack(){
+
                 VStack(alignment: .leading,spacing: 16){
                     Text("Suas habilidades")
                         .font(.system(size: 28, weight: .bold))
@@ -40,10 +41,10 @@ struct WorkoutView: View {
                                 .month(.abbreviated)
                         ))
                         Text(today.formatted(
-                               Date.FormatStyle()
-                                   .locale(Locale(identifier: "pt_BR"))
-                                   .weekday(.wide)
-                           ))
+                            Date.FormatStyle()
+                                .locale(Locale(identifier: "pt_BR"))
+                                .weekday(.wide)
+                        ))
                     }.frame(maxWidth: 346, alignment: .leading).foregroundStyle(Color("text"))
                         .font(.system(size: 17,weight: .semibold))
                     
@@ -57,31 +58,42 @@ struct WorkoutView: View {
                     }
                 }.frame(maxHeight: .infinity)
                     .frame(maxWidth: .infinity)
-                    
+                
                 Spacer()
                 
                 Button(action: {
-                    // Atualizar progresso e status
-                    if modality.trainedToday == false {
-                        modality.totalDaysTrained += 1
-                        // Para cada skill treinada, criar e salvar um WorkoutData
-                        for skill in modality.skillsModality where skill.treinou || skill.aplicou {
-                            let workout = WorkoutData(skill: skill)
-                            workout.treinou = skill.treinou
-                            workout.aplicou = skill.aplicou
-                            modelContext.insert(workout)
-                            modality.datesRegistered.append(workout)
+                    let today = Date()
+                    let registeredSkillsToday = modality.datesRegistered.filter {
+                        Calendar.current.isDate($0.dateRegister, inSameDayAs: today)
+                    }.map { $0.skill.name }
+
+                    
+                    for skill in modality.skillsModality where skill.treinou || skill.aplicou {
+                        if registeredSkillsToday.contains(skill.name) {
+                            continue
                         }
+
+                        let workout = WorkoutData(skill: skill)
+                        workout.treinou = skill.treinou
+                        workout.aplicou = skill.aplicou
+
+                        modelContext.insert(workout)
+                        modality.datesRegistered.append(workout)
                     }
 
+                    
+                    if !modality.trainedToday {
+                        modality.totalDaysTrained += 1
+                    }
+                    
                     modality.trainedToday = true
-                    modality.lastTrainedDate = Date()
+                    modality.lastTrainedDate = today
                     modality.updateProgress()
-
-                    // Salvar tudo
+                    
                     try? modelContext.save()
                     dismiss()
-                }) {
+                })
+                {
                     Image(systemName: "checkmark")
                     Text("Registrado")
                 }
@@ -92,11 +104,14 @@ struct WorkoutView: View {
                 .font(.system(size: 18, weight: .semibold))
                 .padding(.top, 38)
                 .padding(.bottom, 36)
-
+                
                 
                 
                 
             }
+        }
+        .onAppear{
+            registeredSkills = registeredWorkouts.map({$0.skill.name})
         }
     }
 }
