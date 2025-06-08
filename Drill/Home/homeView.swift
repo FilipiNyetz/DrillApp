@@ -26,6 +26,16 @@ struct homeView: View {
                 
                 Color("background").ignoresSafeArea()
                 VStack{
+                    VStack{
+                        Text("Total registros: \(modality.datesRegistered.count)")
+//                        ForEach(modality.datesRegistered, id: \.self){dateRegister in
+//                            Text("\(dateRegister.skill.name)")
+//                            Text("\(dateRegister.dateRegister)")
+//                            Text("Treinou : \(dateRegister.treinou)")
+//                            Text("Treinou : \(dateRegister.aplicou)")
+//                        }
+                    }.padding(.top, 40)
+                   
                     VStack(alignment: .leading){
                         MenuMyModalities(modalitySelected: $modality)
                         Text("Seu progresso nos treinos")
@@ -40,7 +50,7 @@ struct homeView: View {
                     Spacer()
                     ViewProgress(modalityProgress: $modality.goalProgress,modality:$modality)
                     Spacer()
-                    CustomCalendarView()
+                    CalendarView(selectedDate: $currentDate, registeredDates: modality.datesRegistered.map { $0.dateRegister })
                     Spacer()
 
                     Button(action:{
@@ -68,10 +78,10 @@ struct homeView: View {
             modality.updateProgress()
         }
         .onAppear {
-            UserDefaults.standard.set(
-                        Calendar.current.date(byAdding: .day, value: -1, to: Date()),
-                        forKey: UserDefaults.lastResetDateKey
-                    )
+//            UserDefaults.standard.set(
+//                        Calendar.current.date(byAdding: .day, value: -1, to: Date()),
+//                        forKey: UserDefaults.lastResetDateKey
+//                    )
             Modality.resetDailyIfNeeded(context: modelContext)
         }
 

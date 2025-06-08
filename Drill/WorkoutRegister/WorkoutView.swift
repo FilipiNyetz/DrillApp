@@ -18,6 +18,9 @@ struct WorkoutView: View {
     @State var teste :Int = 0
     @State var modality: Modality
     
+    
+    var today: Date = Date()
+    
     @Binding var registeredWorkouts:[WorkoutData]
     
     var body: some View {
@@ -30,8 +33,17 @@ struct WorkoutView: View {
                         .font(.system(size: 28, weight: .bold))
                         .foregroundStyle(Color("text"))
                     VStack(alignment: .leading){
-                        Text("30 abr.")
-                        Text("Quarta-feira")
+                        Text(today.formatted(
+                            Date.FormatStyle()
+                                .locale(Locale(identifier: "pt_BR"))
+                                .day()
+                                .month(.abbreviated)
+                        ))
+                        Text(today.formatted(
+                               Date.FormatStyle()
+                                   .locale(Locale(identifier: "pt_BR"))
+                                   .weekday(.wide)
+                           ))
                     }.frame(maxWidth: 346, alignment: .leading).foregroundStyle(Color("text"))
                         .font(.system(size: 17,weight: .semibold))
                     
@@ -49,17 +61,17 @@ struct WorkoutView: View {
                 Spacer()
                 
                 Button(action: {
-                    // Para cada skill treinada, criar e salvar um WorkoutData
-                    for skill in modality.skillsModality where skill.treinou  {
-                        let workout = WorkoutData(skill: skill)
-                        workout.treinou = skill.treinou
-                        modelContext.insert(workout)
-                        modality.datesRegistered.append(workout)
-                    }
-
                     // Atualizar progresso e status
                     if modality.trainedToday == false {
                         modality.totalDaysTrained += 1
+                        // Para cada skill treinada, criar e salvar um WorkoutData
+                        for skill in modality.skillsModality where skill.treinou || skill.aplicou {
+                            let workout = WorkoutData(skill: skill)
+                            workout.treinou = skill.treinou
+                            workout.aplicou = skill.aplicou
+                            modelContext.insert(workout)
+                            modality.datesRegistered.append(workout)
+                        }
                     }
 
                     modality.trainedToday = true
