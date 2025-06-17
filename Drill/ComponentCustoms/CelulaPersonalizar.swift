@@ -1,49 +1,51 @@
-//
-//  CelulaPersonalizar.swift
-//  Drill
-//
-//  Created by Filipi Romão on 14/05/25.
-//
-
 import SwiftUI
 import SwiftData
 
 struct CelulaPersonalizar: View {
     var options: [String]
-    var context : String
+    var context: String
     @Binding var element: String
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.locale) var locale  
+
     var body: some View {
-        VStack(alignment: .leading){
-            Text("Informe sua modalidade").foregroundColor(Color("text")).font(.system(size: 18, weight: .semibold))
-            HStack(){
-                Text("\(context)")
+        VStack(alignment: .leading) {
+            Text(String(
+                format: NSLocalizedString("Informe sua %@", comment: "Prompt for selecting a value"),
+                NSLocalizedString(context, comment: "Context label")
+            ))
+            .foregroundColor(Color("text"))
+            .font(.system(size: 18, weight: .semibold))
+
+            HStack {
+                Text(NSLocalizedString(context, comment: "Context label"))
                     .foregroundColor(Color("text"))
+                
                 Spacer()
-                Menu{
+                
+                Menu {
                     ForEach(options, id: \.self) { item in
-                        Button(action:{
-                            element = item
+                        Button(action: {
+                            element = item  // salva o valor original em português
                             try? modelContext.save()
-                        }){
-                            Text(item)
+                        }) {
+                            Text(NSLocalizedString(item, comment: "\(context) option"))
                         }
                     }
-                }label:{
-                    HStack{
-                        Text(element)
-                        (Image(systemName: "chevron.up.chevron.down"))
+                } label: {
+                    HStack {
+                        Text(NSLocalizedString(element, comment: "\(context) selected value"))
+                        Image(systemName: "chevron.up.chevron.down")
                     }
-                }.foregroundColor(Color("text"))
-                
-                
-            }.padding(.trailing,20)
-                .padding(.leading,20)
-                .frame(width: 346, height: 44)
-                .border(Color("darkGray"))
-                .background(Color("secondary"))
-            
+                }
+                .foregroundColor(Color("text"))
+            }
+            .padding(.horizontal, 20)
+            .frame(width: 346, height: 44)
+            .border(Color("darkGray"))
+            .background(Color("secondary"))
         }
+    
+        .id(locale.identifier)
     }
 }
-

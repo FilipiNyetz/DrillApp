@@ -12,7 +12,7 @@ struct onboard1View: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     
-    @Query private var modalities: [Modality] 
+    @Query private var modalities: [Modality]
     @State private var modality = Modality(nameModality: "Jiu-Jitsu", belt: "Branca", graduation: "Lisa", skillsModality: [],datesRegistered: [])
     
     @State private var nextPage: Bool = false
@@ -37,18 +37,22 @@ struct onboard1View: View {
                     
                     
                     VStack(alignment: .leading, spacing: 28) {
-                        CelulaPersonalizar(options: modalitiesList, context: "Modalidade", element: $modality.nameModality)
+                        CelulaPersonalizar(options: modalitiesList, context: NSLocalizedString("Modalidade",comment:""), element: $modality.nameModality)
                         Group {
                             switch modality.nameModality {
                             case "Judo":
-                                CelulaPersonalizar(options: beltsJudo, context: "Faixa", element: $modality.belt)
+                                CelulaPersonalizar(options: beltsJudo, context: NSLocalizedString("Faixa", comment: ""), element: $modality.belt)
                             case "Muay-thai":
-                                CelulaPersonalizar(options: beltsMuayThai, context: "Faixa", element: $modality.belt)
+                                CelulaPersonalizar(options: beltsMuayThai,
+                                    context:NSLocalizedString("Faixa", comment: ""),
+                                    element: $modality.belt)
                             case "Boxe":
                                 EmptyView()
                             default:
-                                CelulaPersonalizar(options: beltsBJJ, context: "Faixa", element: $modality.belt)
-                                CelulaPersonalizar(options: graduations, context: "Graduação", element: $modality.graduation)
+                                CelulaPersonalizar(options: beltsBJJ, context:NSLocalizedString("Faixa", comment: ""), element: $modality.belt)
+                                CelulaPersonalizar(options: graduations,
+                                    context:NSLocalizedString("Graduação", comment: ""),
+                                    element: $modality.graduation)
                             }
                         }
                         
@@ -108,7 +112,7 @@ struct onboard1View: View {
                     }
                     
                     modality.skillsModality = []
-                    modality.skillsModality.append(contentsOf: newSkills) 
+                    modality.skillsModality.append(contentsOf: newSkills)
                 }
             
                 .onAppear(){
@@ -128,7 +132,10 @@ struct onboard1View: View {
                     }
                     checkForPermision()
                 }
-           
+                .onTapGesture {
+                    UIApplication.shared.endEditing()
+                }
+            
             
         }
         
@@ -139,7 +146,7 @@ struct onboard1View: View {
         }
         return true
     }
-   
+    
     func checkForPermision(){
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.getNotificationSettings { settings in
@@ -188,6 +195,6 @@ struct onboard1View: View {
         
         notificationCenter.removePendingNotificationRequests(withIdentifiers: ["LocalNotification"])
         notificationCenter.add(request)
-        
     }
+    
 }

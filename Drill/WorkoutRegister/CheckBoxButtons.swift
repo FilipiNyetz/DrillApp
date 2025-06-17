@@ -19,7 +19,9 @@ struct CheckBoxButtons: View {
                 skill.treinou.toggle()
                 
                 if skill.treinou{
-                    skill.progress+=1
+                    if skill.progress<100{
+                        skill.progress+=1
+                    }
                 }else{
                     skill.progress-=1
                 }
@@ -39,7 +41,9 @@ struct CheckBoxButtons: View {
                 
                 skill.aplicou.toggle()
                 if skill.aplicou{
-                    skill.progress+=2
+                    if skill.progress<100{
+                        skill.progress+=2
+                    }
                 }else{
                     skill.progress-=2
                 }

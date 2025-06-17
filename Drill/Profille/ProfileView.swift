@@ -49,16 +49,14 @@ struct ProfileView: View {
                     Spacer()
                     switch modality.nameModality {
                     case "Judo":
-                        
-                        //Chama a celula e passa as opcoes do faixa do judo e qual valor será preenchido no element
-                        CelulaPersonalizar(options: beltsJudo,context: "Faixa", element: $modality.belt)
-                        
+                        CelulaPersonalizar(options: beltsJudo,context: NSLocalizedString("Faixa",comment: ""), element: $modality.belt)
                         
                     case "Muay-thai":
-                        CelulaPersonalizar(options: beltsMuayThai,context: "Faixa", element: $modality.belt)
+                        CelulaPersonalizar(options: beltsMuayThai,context: NSLocalizedString("Faixa",comment: ""), element: $modality.belt)
                         
                     case "Jiu-Jitsu":
-                        CelulaPersonalizar(options: beltsBJJ,context: "Faixa", element: $modality.belt)
+                        CelulaPersonalizar(options: beltsBJJ,context:
+                            NSLocalizedString("Faixa",comment: ""), element: $modality.belt)
                     case "Boxe":
                         Text("")
                     default:

@@ -119,7 +119,9 @@ struct AdicionarModalidadeView: View {
                     }
                 }
             }
-            
+            .onTapGesture {
+                UIApplication.shared.endEditing()
+            }
         }
         
     }
